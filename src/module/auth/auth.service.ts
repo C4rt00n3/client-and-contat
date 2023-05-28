@@ -9,11 +9,11 @@ export class AuthService {
     private clientService: ClientService,
     private jwtService: JwtService,
   ) {}
+
   async validateUser(email: string, password: string) {
     const client = await this.clientService.findByEmail(email);
     if (client) {
       const passwordMatch = compareSync(password, client.password);
-      console.log(passwordMatch);
       if (passwordMatch) {
         return { email: client.email };
       }

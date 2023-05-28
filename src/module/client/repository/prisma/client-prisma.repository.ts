@@ -1,5 +1,9 @@
 import { plainToInstance } from 'class-transformer';
-import { ConflictException, Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateClientDto } from '../../dto/create-client.dto';
 import { UpdateClientDto } from '../../dto/update-client.dto';
@@ -10,7 +14,7 @@ import { Client } from '../../entities/client.entity';
 export class ClientsPrismaRepository implements ClientRepository {
   constructor(private prisma: PrismaService) {}
   async checkNumber(telephone: string): Promise<void> {
-    const checkNumber = await this.prisma.client.findUnique({
+    const checkNumber = await this.prisma.client.findFirst({
       where: {
         telephone,
       },
@@ -43,11 +47,14 @@ export class ClientsPrismaRepository implements ClientRepository {
       where: { id },
     });
 
+    if (!client) {
+      throw new NotFoundException('User not found!');
+    }
     return plainToInstance(Client, client);
   }
 
   async findByEmail(email: string): Promise<Client> {
-    const client = await this.prisma.client.findUnique({
+    const client = await this.prisma.client.findFirst({
       where: { email },
     });
 
@@ -69,5 +76,14 @@ export class ClientsPrismaRepository implements ClientRepository {
         id,
       },
     });
+  }
+
+  async checkClientValid(id: string): Promise<void> {
+    const client = await this.prisma.client.findUnique({
+      where: { id: id },
+    });
+    if (!client) {
+      throw new NotFoundException('User not found');
+    }
   }
 }

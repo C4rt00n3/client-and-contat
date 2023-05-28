@@ -13,11 +13,8 @@ export class CreateContactDto {
   telephone: string;
   @IsString()
   @IsOptional()
-  telegarm: string;
+  telegram: string;
   @IsOptional()
   @IsString()
-  instagra: string;
-  @IsNotEmpty()
-  @IsString()
-  client_id: string;
+  instagram: string;
 }
