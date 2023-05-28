@@ -9,4 +9,5 @@ export abstract class ClientRepository {
   abstract findByEmail(email: string): Promise<Client> | Client;
   abstract update(id: string, data: UpdateClientDto): Promise<Client>;
   abstract remove(id: string): Promise<void>;
+  abstract checkNumber(telephone: string): Promise<void>;
 }
