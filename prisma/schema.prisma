@@ -14,8 +14,8 @@ datasource db {
 model Client {
   id         String    @id 
   name       String    @db.VarChar(50)
-  email      String    @unique @db.VarChar(120)
-  telephone  String    @unique @db.VarChar(15)
+  email      String    @db.VarChar(120)
+  telephone  String    @db.VarChar(15)
   created_at DateTime  @default(now())
   password String
   Contact    Contact[]
@@ -26,14 +26,14 @@ model Client {
 model Contact {
   id         String    @id
   name       String    @db.VarChar(50)
-  email      String    @unique @db.VarChar(120)
-  telephone  String    @unique @db.VarChar(15)
+  email      String    @db.VarChar(120)
+  telephone  String    @db.VarChar(15)
   created_at DateTime  @default(now())
   instagram  String?   @db.VarChar(30)
-  telegarm   String?   @db.VarChar(15)
+  telegram   String?   @db.VarChar(15)
 
-  client   Client @relation(fields: [cleintId], references: [id])
-  cleintId String @default("")
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String @default("")
 
   @@map("contact")
 }

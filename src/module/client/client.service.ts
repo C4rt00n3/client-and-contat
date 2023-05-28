@@ -21,22 +21,25 @@ export class ClientService {
     return await this.clientRepository.create(createClientDto);
   }
 
-  async findAll() {
+  async findAll(userId: string) {
+    await this.clientRepository.checkClientValid(userId);
     return await this.clientRepository.findAll();
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, userId: string) {
+    await this.clientRepository.checkClientValid(userId);
     return await this.clientRepository.findOne(id);
   }
 
-  async update(id: string, updateClientDto: UpdateClientDto) {
-    if (updateClientDto.email) {
+  async update(id: string, updateClientDto: UpdateClientDto, email: string) {
+    await this.clientRepository.checkClientValid(id);
+    if (updateClientDto.email && email !== updateClientDto.email) {
       const checEmil = await this.clientRepository.findByEmail(
         updateClientDto.email,
       );
 
       if (checEmil) {
-        throw new ConflictException('User alread exists!');
+        throw new ConflictException('Email in use');
       }
     }
 
@@ -48,10 +51,15 @@ export class ClientService {
   }
 
   async remove(id: string) {
+    await this.clientRepository.checkClientValid(id);
     return this.clientRepository.remove(id);
   }
 
   async findByEmail(email: string) {
     return await this.clientRepository.findByEmail(email);
+  }
+
+  async checkClientValid(id: string) {
+    return await this.clientRepository.checkClientValid(id);
   }
 }

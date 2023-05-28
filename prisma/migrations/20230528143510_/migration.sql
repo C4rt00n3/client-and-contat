@@ -18,8 +18,8 @@ CREATE TABLE "contact" (
     "telephone" VARCHAR(15) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "instagram" VARCHAR(30),
-    "telegarm" VARCHAR(15),
-    "cleintId" TEXT NOT NULL DEFAULT '',
+    "telegram" VARCHAR(15),
+    "clientId" TEXT NOT NULL DEFAULT '',
 
     CONSTRAINT "contact_pkey" PRIMARY KEY ("id")
 );
@@ -37,4 +37,4 @@ CREATE UNIQUE INDEX "contact_email_key" ON "contact"("email");
 CREATE UNIQUE INDEX "contact_telephone_key" ON "contact"("telephone");
 
 -- AddForeignKey
-ALTER TABLE "contact" ADD CONSTRAINT "contact_cleintId_fkey" FOREIGN KEY ("cleintId") REFERENCES "client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "contact" ADD CONSTRAINT "contact_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

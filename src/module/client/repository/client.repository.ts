@@ -10,4 +10,5 @@ export abstract class ClientRepository {
   abstract update(id: string, data: UpdateClientDto): Promise<Client>;
   abstract remove(id: string): Promise<void>;
   abstract checkNumber(telephone: string): Promise<void>;
+  abstract checkClientValid(id: string): Promise<void>;
 }

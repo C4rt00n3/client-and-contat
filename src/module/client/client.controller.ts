@@ -6,37 +6,48 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
+  Request,
 } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { CreateClientDto } from './dto/create-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
+import { JwtAuthGuard } from '../auth/jwt-guard.auth';
 
 @Controller('client')
 export class ClientController {
   constructor(private readonly clientService: ClientService) {}
 
   @Post()
-  create(@Body() createClientDto: CreateClientDto) {
+  create(@Body() createClientDto: CreateClientDto, @Request() req) {
     return this.clientService.create(createClientDto);
   }
 
   @Get()
-  findAll() {
-    return this.clientService.findAll();
+  @UseGuards(JwtAuthGuard)
+  findAll(@Request() req) {
+    return this.clientService.findAll(req.user.id);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.clientService.findOne(id);
+  @UseGuards(JwtAuthGuard)
+  findOne(@Param('id') id: string, @Request() req) {
+    return this.clientService.findOne(id, req.user.id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateClientDto: UpdateClientDto) {
-    return this.clientService.update(id, updateClientDto);
+  @Patch('')
+  @UseGuards(JwtAuthGuard)
+  update(@Body() updateClientDto: UpdateClientDto, @Request() req) {
+    return this.clientService.update(
+      req.user.id,
+      updateClientDto,
+      req.user.email,
+    );
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.clientService.remove(id);
+  @Delete('')
+  @UseGuards(JwtAuthGuard)
+  remove(@Request() req) {
+    return this.clientService.remove(req.user.id);
   }
 }
