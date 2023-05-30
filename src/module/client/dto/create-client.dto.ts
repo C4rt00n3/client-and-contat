@@ -1,27 +1,39 @@
-import { Transform } from 'class-transformer';
 import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
-import { hashSync } from 'bcrypt';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateClientDto {
   readonly id: string;
   @IsNotEmpty()
   @IsString()
+  @ApiProperty({
+    description: 'name client',
+    type: String,
+    default: 'Rafael felipe',
+    maximum: 50,
+  })
+  @Length(0, 50)
   name: string;
   @IsString()
   @IsEmail()
   @IsNotEmpty()
+  @ApiProperty({
+    description: 'client email',
+    type: String,
+    default: 'rafael@mail.com',
+    maximum: 120,
+  })
   email: string;
   @IsString()
   @IsNotEmpty()
-  telephone: string;
-
-  @IsString()
-  @IsNotEmpty()
-  @Length(8, 120)
-  @Transform(({ value }: { value: string }) => hashSync(value, 10), {
-    groups: ['transform'],
+  @ApiProperty({
+    description: 'client telephone',
+    type: String,
+    default: '77999111000',
+    maximum: 15,
+    minimum: 9,
   })
-  password: string;
+  @Length(9, 15)
+  telephone: string;
 
   readonly create_at?: Date;
 }

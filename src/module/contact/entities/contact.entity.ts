@@ -6,8 +6,8 @@ export class Contact {
   email: string;
   telephone: string;
   instagram?: string;
-  telegarm?: string;
-  client_id?: string;
+  telegram?: string;
+  client_id: string;
   readonly created_at: Date;
 
   constructor() {

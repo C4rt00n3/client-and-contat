@@ -1,63 +1,143 @@
-import { plainToInstance } from 'class-transformer';
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from 'src/database/prisma.service';
 import { CreateClientDto } from '../../dto/create-client.dto';
 import { UpdateClientDto } from '../../dto/update-client.dto';
 import { ClientRepository } from '../client.repository';
 import { Client } from '../../entities/client.entity';
+import { Pagination } from 'src/module/users/entities/user.entity';
+import { UsersService } from 'src/module/users/users.service';
 
 @Injectable()
 export class ClientsPrismaRepository implements ClientRepository {
-  constructor(private prisma: PrismaService) {}
-  async create(data: CreateClientDto): Promise<Client> {
-    console.log(data);
-    const client = new Client();
-    Object.assign(client, { ...data });
-    const newClient = await this.prisma.client.create({
-      data: {
-        ...client,
+  constructor(
+    private prisma: PrismaService,
+    private usersService: UsersService,
+  ) {}
+  async checkNumber(telephone: string): Promise<void> {
+    const checkNumber = await this.prisma.client.findFirst({
+      where: {
+        telephone,
       },
     });
 
-    return plainToInstance(Client, newClient);
+    if (checkNumber) {
+      throw new ConflictException('The phone number is already in use !');
+    }
   }
 
-  async findAll(): Promise<Client[]> {
-    const clients = await this.prisma.client.findMany();
-
-    return plainToInstance(Client, clients);
-  }
-
-  async findOne(id: string): Promise<Client> {
-    const client = await this.prisma.client.findUnique({
-      where: { id },
+  async create(data: CreateClientDto, userId: string): Promise<Client> {
+    const client = new Client();
+    console.log(userId);
+    const { id, email, name, created_at } = client;
+    Object.assign(client, { ...data });
+    const newClient = await this.prisma.client.create({
+      data: {
+        id: client.id,
+        email: client.email,
+        name: client.name,
+        telephone: client.telephone,
+        created_at: client.created_at,
+        userId: userId,
+      },
     });
 
-    return plainToInstance(Client, client);
+    return newClient;
+  }
+
+  async findAll(userId: string, query: any): Promise<Client[] | Pagination> {
+    const clients = await this.prisma.client.findMany({
+      where: { userId },
+    });
+
+    if (query.page) {
+      const take = Math.abs(
+        +query.count <= 10 && +query.count >= 5 ? +query.count : 5,
+      );
+
+      const page = Math.abs(+query.page <= 1 ? 0 : +query.page);
+
+      const skip = Math.abs(page * take - take);
+
+      const usePage = await this.prisma.client.findMany({
+        skip: page > 1 ? skip : page,
+        take: take || 5,
+        where: { userId },
+      });
+
+      return this.usersService.pagination(usePage, '/user', query, clients);
+    }
+
+    return clients;
+  }
+
+  async findOne(id: string, userId: string): Promise<Client> {
+    const client = await this.prisma.client.findFirst({
+      where: { id, userId },
+    });
+
+    if (!client) {
+      throw new NotFoundException('User not found!');
+    }
+    return client;
   }
 
   async findByEmail(email: string): Promise<Client> {
-    const client = await this.prisma.client.findUnique({
+    const client = await this.prisma.client.findFirst({
       where: { email },
     });
 
     return client;
   }
 
-  async update(id: string, data: UpdateClientDto): Promise<Client> {
+  async update(
+    id: string,
+    data: UpdateClientDto,
+    userId: string,
+  ): Promise<Client> {
+    const checcUser = await this.prisma.client.findFirst({
+      where: { id, userId },
+    });
+
+    if (!checcUser) {
+      throw new NotFoundException('Client Not found');
+    }
+
+    console.log(checcUser);
+
     const client = await this.prisma.client.update({
       where: { id },
       data: { ...data },
     });
 
-    return plainToInstance(Client, client);
+    return client;
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: string, userId: string): Promise<void> {
+    const checcUser = await this.prisma.client.findFirst({
+      where: { id, userId },
+    });
+
+    if (!checcUser) {
+      throw new NotFoundException('Client Not found');
+    }
+
     await this.prisma.client.delete({
       where: {
         id,
       },
     });
+  }
+
+  async checkClientValid(id: string): Promise<void> {
+    const client = await this.prisma.client.findUnique({
+      where: { id: id },
+    });
+    if (!client) {
+      throw new NotFoundException('User not found');
+    }
   }
 }
