@@ -1,5 +1,3 @@
-import { Contact } from '@prisma/client';
-import { Exclude } from 'class-transformer';
 import { randomUUID } from 'crypto';
 
 export class Client {
@@ -9,10 +7,8 @@ export class Client {
   name: string;
   email: string;
   telephone: string;
-  @Exclude()
-  password: string;
+  userId?: string;
 
-  contacts?: Contact[];
   constructor() {
     this.id = randomUUID();
   }
