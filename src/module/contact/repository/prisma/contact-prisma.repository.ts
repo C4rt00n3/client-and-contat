@@ -9,11 +9,16 @@ import { ContactRepository } from '../contact.repository';
 import { CreateContactDto } from '../../dto/create-contact.dto';
 import { Contact } from '../../entities/contact.entity';
 import { UpdateContactDto } from '../../dto/update-contact.dto';
+import { UsersService } from 'src/module/users/users.service';
+import { Pagination } from 'src/module/users/entities/user.entity';
 
 @Injectable()
 export class ContactPrismaRepository implements ContactRepository {
-  constructor(private prisma: PrismaService) {}
-  async create(data: CreateContactDto, id: string): Promise<Contact> {
+  constructor(
+    private prisma: PrismaService,
+    private usersService: UsersService,
+  ) {}
+  async create(data: CreateContactDto): Promise<Contact> {
     const contact = new Contact();
 
     Object.assign(contact, { ...data });
@@ -27,25 +32,45 @@ export class ContactPrismaRepository implements ContactRepository {
         created_at: contact.created_at,
         instagram: contact.instagram,
         telegram: contact.telegram,
-        clientId: id,
+        clientId: contact.client_id,
       },
     });
 
     return plainToInstance(Contact, newContact);
   }
 
-  async findAll(clientId: string): Promise<Contact[]> {
-    const contact = await this.prisma.contact.findMany({
-      where: {
-        clientId,
-      },
-    });
+  async findAll(query: any): Promise<Contact[] | Pagination> {
+    const contact = await this.prisma.contact.findMany();
+
+    if (query.page) {
+      const take = Math.abs(
+        +query.count <= 10 && +query.count >= 5 ? +query.count : 5,
+      );
+      const page = Math.abs(+query.page <= 1 ? 0 : +query.page);
+
+      const skip = Math.abs(page * take - take);
+
+      const contactQuery = await this.prisma.contact.findMany({
+        skip: page > 1 ? skip : page,
+        take: take || 5,
+      });
+
+      const pagination = await this.usersService.pagination(
+        contactQuery,
+        '/client',
+        query,
+        contact,
+      );
+
+      return pagination;
+    }
+
     return plainToInstance(Contact, contact);
   }
 
-  async findOne(id: string, clientId: string): Promise<Contact> {
+  async findOne(id: string): Promise<Contact> {
     const contact = await this.prisma.contact.findFirst({
-      where: { id, clientId },
+      where: { id },
     });
 
     if (!contact) {
@@ -57,23 +82,18 @@ export class ContactPrismaRepository implements ContactRepository {
 
   async findByEmail(email: string, clientId: string): Promise<void> {
     const contact = await this.prisma.contact.findFirst({
-      where: { clientId, email },
+      where: { email, clientId },
     });
 
     if (contact) {
-      throw new ConflictException('Contact alread exists!');
+      throw new ConflictException('Email alread exists!');
     }
   }
 
-  async update(
-    id: string,
-    data: UpdateContactDto,
-    clientId: string,
-  ): Promise<Contact> {
+  async update(id: string, data: UpdateContactDto): Promise<Contact> {
     const checkClient = await this.prisma.contact.findFirst({
       where: {
         id: id,
-        clientId,
       },
     });
 
@@ -89,11 +109,10 @@ export class ContactPrismaRepository implements ContactRepository {
     return plainToInstance(Contact, contact);
   }
 
-  async remove(id: string, clientId: string): Promise<void> {
+  async remove(id: string): Promise<void> {
     const contact = await this.prisma.contact.findFirst({
       where: {
         id,
-        clientId,
       },
     });
 
