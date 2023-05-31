@@ -8,7 +8,7 @@
   - [Documentation](localhost:3000/api)
   - [Cloning the Repository](#31-cloning-the-repository)
   - [Installing Docker](#32-installing-and-configuring-docker)
-  - [Variáveis de Ambiente](#33-variáveis-de-ambiente)
+  - [Environment Variables](#33-environment-variables)
 
 ---
 
@@ -45,9 +45,13 @@ ER Diagram of the API, defining the relationships between the database tables.
 
 Clone the project to your machine:
 
+<br>
+
 ```shell
 git clone git@github.com:C4rt00n3/client-and-contat.git
 ```
+
+<br>
 
 ### 3.2. instale e configure o Docker
 
@@ -59,17 +63,24 @@ When everything is done, we only need to run the following command:
 docker compose up --build
 ```
 
-### 3.3. Variáveis de Ambiente
+### 3.3. Environment Variables
 
-Em seguida, crie um arquivo **.env**, copiando o formato do arquivo **.env.example**:
+<br>
 
 ```
 cp .env.example .env
 ```
 
-Seguindo os exemplos presentes no .env.example:</br>
-Configure suas variáveis de ambiente com suas credenciais do Postgres e uma nova database da sua escolha.</br>
-Configure quantos dias durará um empréstimo e quantos dias será o prazo de desbloqueio.</br>
-Configure também o intervalo em horas de execução do script, os dias e horários de funcionamento da biblioteca.
+<br>
+
+Next, create an .env file by copying the format of the .env.example file:
+
+bash
+Copy code
+cp .env.example .env
+Following the examples in the .env.example file:</br>
+Configure your environment variables with your Postgres credentials and a new database of your choice.</br>
+Configure how many days a loan will last and how many days the unlock deadline will be.</br>
+Also, configure the script's execution interval in hours, the days, and the opening hours of the library.
 
 ## <br>
