@@ -80,6 +80,7 @@ export class UsersPrismaRepository implements UsersRepository {
 
       return this.pagination(userPage, 'user', query, user);
     }
+
     return plainToInstance(User, user);
   }
 
