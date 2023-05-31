@@ -1,11 +1,22 @@
 -- CreateTable
+CREATE TABLE "user" (
+    "id" TEXT NOT NULL,
+    "name" VARCHAR(50) NOT NULL,
+    "email" VARCHAR(120) NOT NULL,
+    "password" TEXT NOT NULL DEFAULT '',
+    "img_user_src" TEXT NOT NULL,
+
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "client" (
     "id" TEXT NOT NULL,
     "name" VARCHAR(50) NOT NULL,
     "email" VARCHAR(120) NOT NULL,
     "telephone" VARCHAR(15) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "password" TEXT NOT NULL,
+    "userId" TEXT NOT NULL,
 
     CONSTRAINT "client_pkey" PRIMARY KEY ("id")
 );
@@ -25,16 +36,10 @@ CREATE TABLE "contact" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "client_email_key" ON "client"("email");
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
--- CreateIndex
-CREATE UNIQUE INDEX "client_telephone_key" ON "client"("telephone");
-
--- CreateIndex
-CREATE UNIQUE INDEX "contact_email_key" ON "contact"("email");
-
--- CreateIndex
-CREATE UNIQUE INDEX "contact_telephone_key" ON "contact"("telephone");
+-- AddForeignKey
+ALTER TABLE "client" ADD CONSTRAINT "client_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "contact" ADD CONSTRAINT "contact_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
