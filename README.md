@@ -1,13 +1,12 @@
-
 ## Table of Contents
 
 - [Overview](#1-overview)
 - [ER Diagram](#2-er-diagram)
 - [Quick Start](#3-quick-start)
-  - [Documentation](localhost:3000/api)
+  - [Documentation](#localhost:3000/api)
   - [Cloning the Repository](#31-cloning-the-repository)
-  - [Installing Docker](#32-installing-and-configuring-docker)
-  - [Environment Variables](#33-environment-variables)
+  - [Environment Variables](#32-environment-variables)
+  - [Installing Docker](#33-installing-and-configuring-docker)
 
 ---
 
@@ -52,17 +51,7 @@ git clone git@github.com:C4rt00n3/client-and-contat.git
 
 <br>
 
-### 3.2. instale e configure o Docker
-
-Next, install [Docker](https://docs.docker.com/engine/install/) Once you have finished installing, let's configure it by following these [instructions](https://learn.microsoft.com/pt-br/virtualization/windowscontainers/manage-docker/configure-docker-daemon).
-
-When everything is done, we only need to run the following command:
-
-```
-docker compose up --build
-```
-
-### 3.3. Environment Variables
+### 3.2. Environment Variables
 
 <br>
 
@@ -81,5 +70,19 @@ Following the examples in the .env.example file:</br>
 Configure your environment variables with your Postgres credentials and a new database of your choice.</br>
 Configure how many days a loan will last and how many days the unlock deadline will be.</br>
 Also, configure the script's execution interval in hours, the days, and the opening hours of the library.
+
+<br>
+
+### 3.3. Installing and Configuring Docker
+
+Next, install [Docker](https://docs.docker.com/engine/install/). Once you have finished installing, let's configure it by following these [instructions](https://learn.microsoft.com/pt-br/virtualization/windowscontainers/manage-docker/configure-docker-daemon).
+
+When everything is done, you only need to run the following command:
+
+<br>
+
+```
+docker compose up --build
+```
 
 ## <br>
