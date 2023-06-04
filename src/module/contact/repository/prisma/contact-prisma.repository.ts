@@ -42,6 +42,15 @@ export class ContactPrismaRepository implements ContactRepository {
   async findAll(query: any): Promise<Contact[] | Pagination> {
     const contact = await this.prisma.contact.findMany();
 
+    if (query.client_id && !query.page) {
+      const contactQuery = await this.prisma.contact.findMany({
+        where: {
+          clientId: query.client_id,
+        },
+      });
+
+      return plainToInstance(Contact, contactQuery);
+    }
     if (query.page) {
       const take = Math.abs(
         +query.count <= 10 && +query.count >= 5 ? +query.count : 5,
@@ -53,6 +62,7 @@ export class ContactPrismaRepository implements ContactRepository {
       const contactQuery = await this.prisma.contact.findMany({
         skip: page > 1 ? skip : page,
         take: take || 5,
+        where: query.client_id ? { clientId: query.client_id } : {},
       });
 
       const pagination = await this.usersService.pagination(

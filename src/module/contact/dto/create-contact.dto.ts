@@ -68,7 +68,7 @@ export class CreateContactDto {
     maximum: 36,
     minimum: 36,
   })
-  @Length(0, 30)
+  @Length(0, 50)
   @IsString()
   @IsNotEmpty()
   client_id: string;
