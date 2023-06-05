@@ -46,7 +46,13 @@ Clone the project to your machine:
 <br>
 
 ```shell
-git clone git@github.com:C4rt00n3/client-and-contat.git
+git clone git@github.com:C4rt00n3/client-and-contat.git && cd client-and-contat/
+```
+
+and go to the develop branch
+
+```shell
+  git checkout develop
 ```
 
 <br>
