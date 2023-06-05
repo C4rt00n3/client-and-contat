@@ -25,6 +25,7 @@ export class AuthService {
     const user = await this.usersService.findByEmail(email);
     return {
       token: this.jwtService.sign({ email }, { subject: user.id }),
+      user_id: user.id,
     };
   }
 }

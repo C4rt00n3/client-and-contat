@@ -31,9 +31,7 @@ export class ClientsPrismaRepository implements ClientRepository {
 
   async create(data: CreateClientDto, userId: string): Promise<Client> {
     const client = new Client();
-    console.log(userId);
-    const { id, email, name, created_at } = client;
-    Object.assign(client, { ...data });
+    Object.assign(client, data);
     const newClient = await this.prisma.client.create({
       data: {
         id: client.id,
@@ -41,7 +39,8 @@ export class ClientsPrismaRepository implements ClientRepository {
         name: client.name,
         telephone: client.telephone,
         created_at: client.created_at,
-        userId: userId,
+        img_client_src: client.img_client_src || '',
+        userId,
       },
     });
 
@@ -49,8 +48,14 @@ export class ClientsPrismaRepository implements ClientRepository {
   }
 
   async findAll(userId: string, query: any): Promise<Client[] | Pagination> {
+    console.log(userId);
     const clients = await this.prisma.client.findMany({
-      where: { userId },
+      where: {
+        user: {
+          id: userId,
+        },
+      },
+      include: { user: true },
     });
 
     if (query.page) {
@@ -68,7 +73,7 @@ export class ClientsPrismaRepository implements ClientRepository {
         where: { userId },
       });
 
-      return this.usersService.pagination(usePage, '/user', query, clients);
+      return this.usersService.pagination(usePage, '/client', query, clients);
     }
 
     return clients;
@@ -80,7 +85,7 @@ export class ClientsPrismaRepository implements ClientRepository {
     });
 
     if (!client) {
-      throw new NotFoundException('User not found!');
+      throw new NotFoundException('Client not found!');
     }
     return client;
   }
@@ -137,7 +142,7 @@ export class ClientsPrismaRepository implements ClientRepository {
       where: { id: id },
     });
     if (!client) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('Client not found');
     }
   }
 }

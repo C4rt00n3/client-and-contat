@@ -106,9 +106,9 @@ export class ClientController {
     return this.clientService.update(id, updateClientDto, req.user.id);
   }
 
-  @Delete('')
+  @Delete(':id')
   @UseGuards(JwtAuthGuard)
-  remove(id: string, @Request() req) {
+  remove(@Param('id') id: string, @Request() req) {
     return this.clientService.remove(id, req.user.id);
   }
 }
