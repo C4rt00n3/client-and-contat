@@ -21,7 +21,7 @@ An overview of the project and the technologies used.
 - [Docker](https://docs.docker.com/)
 
 The base URL of the application:
-http://yourapi.com/v1
+https://client-and-contat.onrender.com
 
 ---
 
