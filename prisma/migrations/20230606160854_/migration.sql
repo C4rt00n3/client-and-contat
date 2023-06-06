@@ -16,6 +16,7 @@ CREATE TABLE "client" (
     "email" VARCHAR(120) NOT NULL,
     "telephone" VARCHAR(15) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "img_client_src" VARCHAR NOT NULL,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "client_pkey" PRIMARY KEY ("id")

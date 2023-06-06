@@ -8,6 +8,7 @@ export class Client {
   email: string;
   telephone: string;
   userId?: string;
+  img_client_src?: string;
 
   constructor() {
     this.id = randomUUID();

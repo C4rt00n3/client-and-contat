@@ -65,10 +65,7 @@ export class CreateContactDto {
     description: 'client id',
     type: String,
     default: '0fb76562-9163-4521-9d20-9f68f9622cc1',
-    maximum: 36,
-    minimum: 36,
   })
-  @Length(0, 30)
   @IsString()
   @IsNotEmpty()
   client_id: string;
