@@ -44,6 +44,7 @@ export class ClientController {
     },
   })
   create(@Body() createClientDto: CreateClientDto, @Request() req) {
+    console.log(req);
     return this.clientService.create(createClientDto, req.user.id);
   }
 

@@ -88,13 +88,12 @@ export class UsersPrismaRepository implements UsersRepository {
     if (!email) {
       return;
     }
-    console.log(email, 'mail');
 
-    const user = await this.prisma.user.findMany({
+    const user = await this.prisma.user.findUnique({
       where: { email },
     });
 
-    return user[0];
+    return user;
   }
 
   async findOne(id: string): Promise<User> {
