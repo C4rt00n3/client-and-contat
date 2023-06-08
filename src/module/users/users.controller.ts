@@ -85,8 +85,6 @@ export class UsersController {
     },
   })
   findAll(@Query() query = {}) {
-    console.log(query);
-
     return this.usersService.findAll(query);
   }
 

@@ -48,7 +48,6 @@ export class ClientsPrismaRepository implements ClientRepository {
   }
 
   async findAll(userId: string, query: any): Promise<Client[] | Pagination> {
-    console.log(userId);
     const clients = await this.prisma.client.findMany({
       where: {
         user: {
@@ -113,8 +112,6 @@ export class ClientsPrismaRepository implements ClientRepository {
     if (!checcUser) {
       throw new NotFoundException('Client Not found');
     }
-
-    console.log(checcUser);
 
     const client = await this.prisma.client.update({
       where: { id },
