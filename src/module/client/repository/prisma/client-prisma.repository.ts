@@ -17,10 +17,11 @@ export class ClientsPrismaRepository implements ClientRepository {
     private prisma: PrismaService,
     private usersService: UsersService,
   ) {}
-  async checkNumber(telephone: string): Promise<void> {
+  async checkNumber(telephone: string, userId: string): Promise<void> {
     const checkNumber = await this.prisma.client.findFirst({
       where: {
         telephone,
+        userId,
       },
     });
 
@@ -32,6 +33,7 @@ export class ClientsPrismaRepository implements ClientRepository {
   async create(data: CreateClientDto, userId: string): Promise<Client> {
     const client = new Client();
     Object.assign(client, data);
+
     const newClient = await this.prisma.client.create({
       data: {
         id: client.id,
@@ -48,12 +50,9 @@ export class ClientsPrismaRepository implements ClientRepository {
   }
 
   async findAll(userId: string, query: any): Promise<Client[] | Pagination> {
-    console.log(userId);
     const clients = await this.prisma.client.findMany({
       where: {
-        user: {
-          id: userId,
-        },
+        userId,
       },
       include: { user: true },
     });
@@ -90,9 +89,9 @@ export class ClientsPrismaRepository implements ClientRepository {
     return client;
   }
 
-  async findByEmail(email: string): Promise<Client> {
+  async findByEmail(email: string, userId?: string): Promise<Client> {
     const client = await this.prisma.client.findFirst({
-      where: { email },
+      where: { email, userId },
     });
 
     return client;

@@ -61,7 +61,7 @@ export class UsersService {
     if (!user) {
       throw new NotFoundException('User not found!');
     }
-    return await this.usersRepository.remove(id);
+    return await this.usersRepository.remove(user);
   }
 
   async pagination(data: any[], resUrl: string, query: any, arrayComp: any[]) {

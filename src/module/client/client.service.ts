@@ -9,10 +9,11 @@ export class ClientService {
   constructor(private clientRepository: ClientRepository) {}
   @UseGuards(JwtAuthGuard)
   async create(createClientDto: CreateClientDto, userId: string) {
-    await this.clientRepository.checkNumber(createClientDto.telephone);
+    await this.clientRepository.checkNumber(createClientDto.telephone, userId);
 
     const checEmil = await this.clientRepository.findByEmail(
       createClientDto.email,
+      userId,
     );
 
     if (checEmil) {
@@ -32,7 +33,10 @@ export class ClientService {
 
   async update(id: string, updateClientDto: UpdateClientDto, userId: string) {
     if (updateClientDto.telephone) {
-      await this.clientRepository.checkNumber(updateClientDto.telephone);
+      await this.clientRepository.checkNumber(
+        updateClientDto.telephone,
+        userId,
+      );
     }
 
     return await this.clientRepository.update(id, updateClientDto, userId);
