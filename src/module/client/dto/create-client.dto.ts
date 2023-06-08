@@ -44,5 +44,14 @@ export class CreateClientDto {
   @IsOptional()
   img_client_src?: string;
 
+  @IsString()
+  @ApiProperty({
+    description: 'client img',
+    type: String,
+    default: 'http/exemple',
+  })
+  @IsOptional()
+  img_client_src: string;
+
   readonly create_at?: Date;
 }

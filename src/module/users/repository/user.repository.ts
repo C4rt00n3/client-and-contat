@@ -6,9 +6,9 @@ export abstract class UsersRepository {
   abstract create(data: CreateUserDto): Promise<User>;
   abstract findAll(query: any): Promise<Pagination | User[]> | Pagination;
   abstract findOne(id: string): Promise<User>;
-  abstract findByEmail(email: string): Promise<User> | User;
+  abstract findByEmail(email: string): Promise<User>;
   abstract update(id: string, data: UpdateUserDto): Promise<User>;
-  abstract remove(id: string): Promise<void>;
+  abstract remove(user: User): Promise<void>;
   abstract pagination(
     data: any[],
     resUrl: string,

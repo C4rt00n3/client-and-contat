@@ -83,7 +83,11 @@ export class UsersPrismaRepository implements UsersRepository {
   }
 
   async findByEmail(email: string): Promise<User> {
-    const user = await this.prisma.user.findFirst({
+    if (!email) {
+      return;
+    }
+
+    const user = await this.prisma.user.findUnique({
       where: { email },
     });
 
@@ -91,7 +95,7 @@ export class UsersPrismaRepository implements UsersRepository {
   }
 
   async findOne(id: string): Promise<User> {
-    const user = await this.prisma.user.findFirst({
+    const user = await this.prisma.user.findUnique({
       where: { id },
     });
 
@@ -107,10 +111,10 @@ export class UsersPrismaRepository implements UsersRepository {
     return plainToInstance(User, user);
   }
 
-  async remove(id: string): Promise<void> {
-    await this.prisma.user.delete({
+  async remove(userComplet: User): Promise<void> {
+    const user = await this.prisma.user.delete({
       where: {
-        id,
+        id: userComplet.id,
       },
     });
   }

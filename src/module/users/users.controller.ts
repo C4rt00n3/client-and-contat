@@ -114,13 +114,14 @@ export class UsersController {
     return this.usersService.update(req.user.id, updateUserDto);
   }
 
-  @Delete(':id')
+  @Delete()
   @ApiDefaultResponse({
     status: 204,
     schema: null,
   })
   @ApiBearerAuth()
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(id);
+  @UseGuards(JwtAuthGuard)
+  remove(@Request() req) {
+    return this.usersService.remove(req.user.id);
   }
 }
