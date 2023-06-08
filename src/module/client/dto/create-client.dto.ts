@@ -1,4 +1,10 @@
-import { IsEmail, IsNotEmpty, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateClientDto {
@@ -34,6 +40,15 @@ export class CreateClientDto {
   })
   @Length(9, 15)
   telephone: string;
+
+  @IsString()
+  @ApiProperty({
+    description: 'client img',
+    type: String,
+    default: 'http/exemple',
+  })
+  @IsOptional()
+  img_client_src: string;
 
   readonly create_at?: Date;
 }

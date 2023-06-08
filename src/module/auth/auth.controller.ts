@@ -4,12 +4,15 @@ import { LocalAuthGuard } from './local-auth.guard';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiProperty } from '@nestjs/swagger';
 import { ApiCreatedResponse, ApiDefaultResponse } from '@nestjs/swagger/dist';
+import { IsNotEmpty, IsString } from 'class-validator';
 
-class ClientLogin {
+class Login {
   @ApiProperty({
     description: 'email',
     type: String,
   })
+  @IsNotEmpty()
+  @IsString()
   email: string;
   @ApiProperty({
     description: 'email',
@@ -17,6 +20,8 @@ class ClientLogin {
     minimum: 8,
     maximum: 120,
   })
+  @IsNotEmpty()
+  @IsString()
   password: string;
 }
 
@@ -30,13 +35,17 @@ export class AuthController {
   @ApiDefaultResponse({
     schema: {
       default: {
+        userId: 'ftsdyifgsadfsadbjgiiysadadygh',
         token:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFAZW1haWwuY29tIiwiaWF0IjoxNjg1Mzk4NzQwLCJleHAiOjE2ODU0ODUxNDAsInN1YiI6IjE5YTIzYmFhLTdmMTAtNDgzNC1hMmNlLWU5ZmJkYjEyOGEyNyJ9.AJ8Jc0fNwWOBXSqxxwy9CAm_cui15UsQBYwufAhezsc',
       },
     },
   })
   @UseGuards(LocalAuthGuard)
-  async login(@Body() client: ClientLogin) {
-    return await this.authService.login(client.email);
+  async login(@Body() user: Login) {
+    if (!user.email) {
+      await this.login(user);
+    }
+    return await this.authService.login(user?.email?.toString());
   }
 }

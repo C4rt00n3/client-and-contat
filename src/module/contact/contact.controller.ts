@@ -76,6 +76,13 @@ export class ContactController {
     example: 5,
     required: false,
   })
+  @ApiQuery({
+    name: 'client_id',
+    type: String,
+    description: `If you don't pass the client_id, it will retrieve the contacts from all of your clients.`,
+    example: '3a6f5b3c-2977-4fcd-a329-bd1b845ed7ea',
+    required: false,
+  })
   @UseGuards(JwtAuthGuard)
   findAll(@Request() req, @Query() query) {
     return this.contactService.findAll(req.user.id, query);
