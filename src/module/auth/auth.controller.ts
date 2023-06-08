@@ -38,6 +38,7 @@ export class AuthController {
         userId: 'ftsdyifgsadfsadbjgiiysadadygh',
         token:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJhZmFAZW1haWwuY29tIiwiaWF0IjoxNjg1Mzk4NzQwLCJleHAiOjE2ODU0ODUxNDAsInN1YiI6IjE5YTIzYmFhLTdmMTAtNDgzNC1hMmNlLWU5ZmJkYjEyOGEyNyJ9.AJ8Jc0fNwWOBXSqxxwy9CAm_cui15UsQBYwufAhezsc',
+        user_id: '32b0a551-72a9-4875-893f-d032404d46ed',
       },
     },
   })

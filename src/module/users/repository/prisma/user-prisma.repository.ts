@@ -38,8 +38,6 @@ export class UsersPrismaRepository implements UsersRepository {
       const calc = data.length * page;
       const take = +query.count || 5;
 
-      console.log(calc, arrayComp.length - 1);
-
       if (arrayComp.length < take) {
         return null;
       }

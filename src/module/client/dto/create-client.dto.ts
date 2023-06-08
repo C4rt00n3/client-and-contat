@@ -40,6 +40,9 @@ export class CreateClientDto {
   })
   @Length(9, 15)
   telephone: string;
+  @IsString()
+  @IsOptional()
+  img_client_src?: string;
 
   @IsString()
   @ApiProperty({
