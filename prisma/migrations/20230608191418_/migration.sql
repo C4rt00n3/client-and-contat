@@ -16,7 +16,7 @@ CREATE TABLE "client" (
     "email" VARCHAR(120) NOT NULL,
     "telephone" VARCHAR(15) NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "img_client_src" VARCHAR NOT NULL,
+    "img_client_src" VARCHAR,
     "userId" TEXT NOT NULL,
 
     CONSTRAINT "client_pkey" PRIMARY KEY ("id")
@@ -35,6 +35,9 @@ CREATE TABLE "contact" (
 
     CONSTRAINT "contact_pkey" PRIMARY KEY ("id")
 );
+
+-- CreateIndex
+CREATE UNIQUE INDEX "user_id_key" ON "user"("id");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "user_email_key" ON "user"("email");

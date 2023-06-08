@@ -33,10 +33,6 @@ export class ClientsPrismaRepository implements ClientRepository {
   async create(data: CreateClientDto, userId: string): Promise<Client> {
     const client = new Client();
     Object.assign(client, data);
-<<<<<<< HEAD
-=======
-
->>>>>>> 8f4a43bf2aba6f8d814c8c6af4c0c0959cd9daeb
     const newClient = await this.prisma.client.create({
       data: {
         id: client.id,
@@ -44,11 +40,7 @@ export class ClientsPrismaRepository implements ClientRepository {
         name: client.name,
         telephone: client.telephone,
         created_at: client.created_at,
-<<<<<<< HEAD
         img_client_src: client?.img_client_src || '',
-=======
-        img_client_src: client.img_client_src || '',
->>>>>>> 8f4a43bf2aba6f8d814c8c6af4c0c0959cd9daeb
         userId,
       },
     });
@@ -59,13 +51,9 @@ export class ClientsPrismaRepository implements ClientRepository {
   async findAll(userId: string, query: any): Promise<Client[] | Pagination> {
     const clients = await this.prisma.client.findMany({
       where: {
-<<<<<<< HEAD
         user: {
           id: userId,
         },
-=======
-        userId,
->>>>>>> 8f4a43bf2aba6f8d814c8c6af4c0c0959cd9daeb
       },
       include: { user: true },
     });
@@ -102,14 +90,7 @@ export class ClientsPrismaRepository implements ClientRepository {
     return client;
   }
 
-<<<<<<< HEAD
-  async findByEmail(email: string): Promise<Client> {
-    if (!email) {
-      return;
-    }
-=======
   async findByEmail(email: string, userId?: string): Promise<Client> {
->>>>>>> 8f4a43bf2aba6f8d814c8c6af4c0c0959cd9daeb
     const client = await this.prisma.client.findFirst({
       where: { email, userId },
     });

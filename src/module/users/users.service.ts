@@ -28,7 +28,6 @@ export class UsersService {
   }
 
   async findOne(id: string) {
-    console.log(id);
     const user = await this.usersRepository.findOne(id);
 
     if (!user) {

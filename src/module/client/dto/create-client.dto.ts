@@ -40,9 +40,6 @@ export class CreateClientDto {
   })
   @Length(9, 15)
   telephone: string;
-  @IsString()
-  @IsOptional()
-  img_client_src?: string;
 
   @IsString()
   @ApiProperty({
@@ -51,7 +48,7 @@ export class CreateClientDto {
     default: 'http/exemple',
   })
   @IsOptional()
-  img_client_src: string;
+  img_client_src?: string;
 
   readonly create_at?: Date;
 }

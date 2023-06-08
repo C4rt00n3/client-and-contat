@@ -66,10 +66,7 @@ export class CreateContactDto {
     type: String,
     default: '0fb76562-9163-4521-9d20-9f68f9622cc1',
   })
-<<<<<<< HEAD
-=======
   @Length(0, 50)
->>>>>>> 8f4a43bf2aba6f8d814c8c6af4c0c0959cd9daeb
   @IsString()
   @IsNotEmpty()
   client_id: string;
